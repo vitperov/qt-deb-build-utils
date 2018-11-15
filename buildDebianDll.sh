@@ -4,10 +4,11 @@ LIBFILE=$1
 CONTROL=$2
 OUTNAME=$3
 LIBDIR=$4
+ARCH=$5
 
-MAJOR=$5
-MINOR=$6
-BUILD=$7
+MAJOR=$6
+MINOR=$7
+BUILD=$8
 
 echo Attributes: $LIBFILE $CONTROL $OUTNAME
 
@@ -36,6 +37,7 @@ cp $CONTROL $PACKAGE_CTRL_DIR/control
 cd $PACKAGE_CTRL_DIR/
 sed -i "s/SONAME/$SONAME/g" control
 sed -i "s/VERSION/$VERSION/g" control
+sed -i "s/ARCH/$ARCH/g" control
 
 
 cp $ROOT_DIR/scripts/changelog $PACKAGE_CTRL_DIR/
@@ -58,6 +60,6 @@ ln -s $OUTNAME.so.$VERSION $OUTNAME.so.$VMAJOR
 cd $BUILD_DIR/package-x64/
 fakeroot dpkg-deb -b $SONAME
 
-mv $SONAME.deb $PACKAGE_DEST_DIR/"$OUTNAME"_"$VERSION"_amd64.deb
+mv $SONAME.deb $PACKAGE_DEST_DIR/"$OUTNAME"_"$VERSION"_"$ARCH".deb
 
-lintian $PACKAGE_DEST_DIR/"$OUTNAME"_"$VERSION"_amd64.deb
+lintian $PACKAGE_DEST_DIR/"$OUTNAME"_"$VERSION"_"$ARCH".deb
