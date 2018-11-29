@@ -1,0 +1,2 @@
+Ubuntu dependencies:
+sudo apt install lintian fakeroot
