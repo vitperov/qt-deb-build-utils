@@ -9,15 +9,16 @@ OUTNAME=$6
 
 echo Attributes: $BINFILE $CONTROL $OUTNAME
 
+CUR_DIR=`pwd`
 SONAME="${PROJNAME,,}" #to lower
 echo SONAME=$SONAME
 echo VERSION=$VERSION
 
-PACKAGE_DIR=$BUILD_DIR/package-"$ARCH"/$SONAME-dev
+PACKAGE_DIR=$CUR_DIR/package-$SONAME-dev-$ARCH/$SONAME-dev
 PACKAGE_CTRL_DIR=$PACKAGE_DIR/DEBIAN
 SRC_DEST_DIR=$PACKAGE_DIR/usr/include/$SONAME
 PACKAGE_DOC_DIR=$PACKAGE_DIR/usr/share/doc/$SONAME-dev
-PACKAGE_DEST_DIR=$DEST_DIR/packages
+#PACKAGE_DEST_DIR=$DEST_DIR/packages
 
 rm -rf $PACKAGE_DIR
 
@@ -40,10 +41,10 @@ cp $ROOT_DIR/scripts/copyright $PACKAGE_DOC_DIR/
 
 cp -a $SRCFROM/* $SRC_DEST_DIR
 
-cd $BUILD_DIR/package-"$ARCH"/
+cd $PACKAGE_DIR/../
 fakeroot dpkg-deb -b $SONAME-dev
 
 mkdir -p $PACKAGE_DEST_DIR
-mv $SONAME-dev.deb $PACKAGE_DEST_DIR/"$OUTNAME"_"$VERSION"_"$ARCH".deb
+mv $SONAME-dev.deb $CUR_DIR/"$OUTNAME"_"$VERSION"_"$ARCH".deb
 
-lintian $PACKAGE_DEST_DIR/"$OUTNAME"_"$VERSION"_"$ARCH".deb
+lintian $CUR_DIR/"$OUTNAME"_"$VERSION"_"$ARCH".deb
